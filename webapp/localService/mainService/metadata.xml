@@ -1,0 +1,49 @@
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
+        <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ProjectModel">
+            <EntityType Name="Order_Detail">
+                <Key>
+                    <PropertyRef Name="OrderID"/>
+                    <PropertyRef Name="ProductName"/>
+                </Key>
+                <Property Name="OrderID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true"/>
+                <Property Name="Quantity" Type="Edm.Int16" Nullable="false"/>
+                <Property Name="UnitPrice" Type="Edm.Decimal" Nullable="false" Precision="19" Scale="4"/>
+                <Property Name="TotalPrice" Type="Edm.Decimal" Nullable="false" Precision="19" Scale="4"/>
+                <NavigationProperty Name="Order" Relationship="ProjectModel.Order_Details_Orders" ToRole="Orders" FromRole="Order_Details"/>
+            </EntityType>
+            <EntityType Name="Order">
+                <Key>
+                    <PropertyRef Name="OrderID"/>
+                </Key>
+                <Property Name="OrderID" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="CreationDate" Type="Edm.Date" Precision="3"/>
+                <Property Name="ReceivingPlant" Type="Edm.String" Nullable="false"/>
+                <Property Name="DeliveringPlant" Type="Edm.String" Nullable="false"/>
+                <Property Name="Status" Type="Edm.String" Nullable="false"/>
+                <NavigationProperty Name="Order_Details" Relationship="ProjectModel.Order_Details_Orders" ToRole="Order_Details" FromRole="Orders"/>
+            </EntityType>
+            <Association Name="Order_Details_Orders">
+                <End Type="ProjectModel.Order" Role="Orders" Multiplicity="1"/>
+                <End Type="ProjectModel.Order_Detail" Role="Order_Details" Multiplicity="*"/>
+                <ReferentialConstraint>
+                    <Principal Role="Orders">
+                        <PropertyRef Name="OrderID"/>
+                    </Principal>
+                    <Dependent Role="Order_Details">
+                        <PropertyRef Name="OrderID"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="ProjectEntities" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="Orders" EntityType="ProjectModel.Order"></EntitySet>
+                <EntitySet Name="Order_Details" EntityType="ProjectModel.Order_Detail"></EntitySet>
+                <AssociationSet Name="Order_Details_Orders" Association="ProjectModel.Order_Details_Orders">
+                    <End Role="Order_Details" EntitySet="Order_Details"/>
+                    <End Role="Orders" EntitySet="Orders"/>
+                </AssociationSet>
+            </EntityContainer>
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

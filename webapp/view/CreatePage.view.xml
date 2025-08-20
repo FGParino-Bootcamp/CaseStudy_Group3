@@ -1,0 +1,8 @@
+<mvc:View xmlns:core="sap.ui.core" controllerName="casestudy.training.casestudyg3.controller.CreatePage"
+xmlns:mvc="sap.ui.core.mvc" 
+xmlns="sap.m" 
+xmlns:f="sap.ui.layout.form">
+    <Page id="createPage" title="{i18n>title}">
+    <f:SimpleForm id="idForm1" title="Order Detail"></f:SimpleForm>
+    </Page>
+</mvc:View>

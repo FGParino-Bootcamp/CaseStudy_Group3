@@ -1,0 +1,112 @@
+{
+  "_version": "1.76.0",
+  "sap.app": {
+    "id": "casestudy.training.casestudyg3",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.5",
+      "toolsId": "b5fac327-fc8b-478e-b411-358076f78e4f"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.139.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "casestudy.training.casestudyg3.i18n.i18n"
+        }
+      },
+      "": {
+              "type": "sap.ui.model.json.JSONModel",
+              "uri": "model/Orders.json",
+              "settings": {}
+            }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "casestudy.training.casestudyg3.view",
+        "async": true,
+        "viewPath": "casestudy.training.casestudyg3.view"
+      },
+      "routes": [
+        {
+          "name": "RouteMainPage",
+          "pattern": ":?query:",
+          "target": [
+            "TargetMainPage"
+          ]
+        },
+        {
+          "name": "RouteCreatePage",
+          "pattern": "Create",
+          "target": ["TargetCreatePage"]
+      }   
+      ],
+      "targets": {
+        "TargetMainPage": {
+          "id": "MainPage",
+          "name": "MainPage"
+        },
+        "TargetCreatePage": {
+            "viewId": "CreatePage",
+            "viewName": "CreatePage"
+        }       
+      }
+    },
+    "rootView": {
+      "viewName": "casestudy.training.casestudyg3.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
