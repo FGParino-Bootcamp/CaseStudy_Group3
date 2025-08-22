@@ -30,7 +30,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 		</fb:FilterBar>
 		<Table
 			id="OrderTable"
-			inset="false"
+			autoPopinMode="true"
 			items="{
 				path: '/Orders',
 				sorter: {
@@ -42,7 +42,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 		>
 		<headerToolbar>
 			<Toolbar id="idFooter">
-				<Text id="idOrderCount" text="Orders({=${/Orders}.length})"/>
+				<Text id="idOrderCount"/>
 				<ToolbarSpacer id="idSpacerFooter"/>
 				<Button id="btnAdd" icon="sap-icon://add" press="onAddOrder"/>
 				<Button id="btnDelete" icon="sap-icon://delete" press="onDeleteOrder" />
@@ -67,7 +67,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 			</columns>
 
 			<items>
-				<ColumnListItem id="_IDGenColumnListItem" vAlign="Middle">
+				<ColumnListItem id="_IDGenColumnListItem" vAlign="Middle" type="Active" press="onSelectOrder" navigated="true">
 					<cells>
 						<Text id="_IDGenText31" text="{OrderID}" />
 						<Text id="_IDGenText32" text="{ parts: [ {path: 'CreationDate'} ], formatter: '.formatter.formatDate' }"/>

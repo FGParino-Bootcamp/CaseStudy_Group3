@@ -68,7 +68,6 @@
         "preload": true,
         "settings": {}
       }
-     
     },
     "resources": {
       "css": [
@@ -93,15 +92,18 @@
         {
           "name": "RouteMainPage",
           "pattern": ":?query:",
-          "target": [
-            "TargetMainPage"
-          ]
+          "target": ["TargetMainPage" ]
         },
         {
           "name": "RouteCreatePage",
           "pattern": "Create",
           "target": ["TargetCreatePage"]
-      }   
+        },
+        {
+          "name": "RouteDisplayPage",
+          "pattern": "OrderDetal/{OrderID}",
+          "target": ["TargetDisplayPage"]
+        }         
       ],
       "targets": {
         "TargetMainPage": {
@@ -111,7 +113,11 @@
         "TargetCreatePage": {
             "viewId": "CreatePage",
             "viewName": "CreatePage"
-        }       
+        },
+        "TargetDisplayPage": {
+          "viewId": "DisplayPage",
+          "viewName": "DisplayPage"
+        }             
       }
     },
     "rootView": {
