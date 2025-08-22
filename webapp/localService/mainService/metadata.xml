@@ -18,9 +18,11 @@
                     <PropertyRef Name="OrderID"/>
                 </Key>
                 <Property Name="OrderID" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="CreationDate" Type="Edm.Date" Precision="3"/>
+                <Property Name="CreationDate" Type="Edm.DateTime" Precision="7"/>
                 <Property Name="ReceivingPlant" Type="Edm.String" Nullable="false"/>
+                <Property Name="RPlantDesc" Type="Edm.String" Nullable="false"/>
                 <Property Name="DeliveringPlant" Type="Edm.String" Nullable="false"/>
+                <Property Name="DPlantDesc" Type="Edm.String" Nullable="false"/>
                 <Property Name="Status" Type="Edm.String" Nullable="false"/>
                 <NavigationProperty Name="Order_Details" Relationship="ProjectModel.Order_Details_Orders" ToRole="Order_Details" FromRole="Orders"/>
             </EntityType>
