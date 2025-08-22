@@ -1,38 +1,41 @@
- [
+[
     {
+        "OrderID": 1001,
         "CreationDate": "/Date(188236548000)/",
         "ReceivingPlant": "9101",
         "RPlantDesc": "Singapore",
         "DeliveringPlant": "9102",
         "DPlantDesc": "Malaysia",
-        "Status": "Created",
-        "OrderID": 1001
+        "Status": "Created"
     },
     {
+        "OrderID": 1002,
         "CreationDate": "/Date(1419981376000)/",
         "ReceivingPlant": "9101",
         "RPlantDesc": "Singapore",
         "DeliveringPlant": "9103",
         "DPlantDesc": "Vietnam",
-        "Status": "Released",
-        "OrderID": 1002
+        "Status": "Released"
+        
     },
     {
+        "OrderID": 1003,
         "CreationDate": "/Date(935668946000)/",
         "ReceivingPlant": "9104",
         "RPlantDesc": "Thailand",
         "DeliveringPlant": "9105",
         "DPlantDesc": "Philippines",
-        "Status": "Partially Completed",
-        "OrderID": 1003
+        "Status": "Partially Completed"
+        
     },
     {
+        "OrderID": 1004,
         "CreationDate": "/Date(1358911323000)/",
         "ReceivingPlant": "9101",
         "RPlantDesc": "Singapore",
         "DeliveringPlant": "9105",
         "DPlantDesc": "Philippines",
-        "Status": "Delivered",
-        "OrderID": 1004
+        "Status": "Delivered"
+        
     }
-]
+    ]
