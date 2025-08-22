@@ -13,7 +13,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 				</fb:FilterGroupItem>
 				<fb:FilterGroupItem id="_IDGenFilterGroupItem2" name="Creation Date" label="Creation Date" groupName="Group1" visibleInFilterBar="true">
 					<fb:control>
-						<DatePicker id="idInpCreDate" placeholder="Creation Date"></DatePicker>
+						<DatePicker id="idInpCreDate" placeholder="Creation Date" displayFormat="dd MMM YYYY"></DatePicker>
 					</fb:control>
 				</fb:FilterGroupItem>
 				<fb:FilterGroupItem id="_IDGenFilterGroupItem3" name="Status" label="Status" groupName="Group1" visibleInFilterBar="true">
@@ -32,10 +32,13 @@ xmlns:fb="sap.ui.comp.filterbar">
 			id="OrderTable"
 			inset="false"
 			items="{
-				path: '/Orders'
+				path: '/Orders',
+				sorter: {
+				path: 'OrderID',
+				descending: false
+			}
 			}"
 			mode="MultiSelect"
-
 		>
 		<headerToolbar>
 			<Toolbar id="idFooter">
@@ -68,9 +71,9 @@ xmlns:fb="sap.ui.comp.filterbar">
 					<cells>
 						<Text id="_IDGenText31" text="{OrderID}" />
 						<Text id="_IDGenText32" text="{ parts: [ {path: 'CreationDate'} ], formatter: '.formatter.formatDate' }"/>
-						<Text id="_IDGenText33" text="{ReceivingPlant}" />
-						<Text id="_IDGenText34" text="{DeliveringPlant}" />
-						<Text id="_IDGenText42" text="{Status}" />
+						<Text id="_IDGenText33" text="{ReceivingPlant} - {RPlantDesc}" />
+						<Text id="_IDGenText34" text="{DeliveringPlant} - {DPlantDesc}" />	
+						<ObjectStatus id="idStatus" text="{Status}" state="{ path: 'Status', formatter:'.formatter.statusState'}" />    
 					</cells>
 				</ColumnListItem>
 			</items>

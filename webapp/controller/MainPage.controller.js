@@ -11,27 +11,18 @@ sap.ui.define([
         return Controller.extend("casestudy.training.casestudyg3.controller.MainPage", {
             formatter:Formatter,
             onInit: function() {   
-            },
-            onAfterRendering: function(oEvent) {
-                let oView  = this.getView(); 
-                let oTable = oView.byId("OrderTable");
-                if (oTable) {
-                    let oBinding = oTable.getBinding("items");
-                oBinding.attachChange(function (oEvent) {
-                    var iCount = oBinding.getLength();
-                    var oCount = this.byId("idOrderCount"); 
+                let oTable = this.byId("OrderTable");
+                oTable.attachUpdateFinished(function(oEvent) {
+                    let iCount = oEvent.getParameter("total");
+                    let oCount = this.byId("idOrderCount"); 
                     if (oCount) {
-                        oCount.setText("Orders(" + iCount + ")");
+                    oCount.setText("Orders(" + iCount + ")");
                     }
-                }.bind(this));
-                }   
+                }.bind(this)); 
             },
             onSearch: function () {
-                var oModel = new JSONModel("../model/Orders.json");
-                this.getView().setModel(oModel);
                 let oView  = this.getView();
                 let oTable = oView.byId("OrderTable");
-                oTable
                 if (oTable) {
                     let oBinding = oTable.getBinding("items");
                     let aFilters = [];
@@ -53,7 +44,7 @@ sap.ui.define([
                             }
                     }   
                     if (aFilters) {
-                        oBinding.filter(aFilters);                        
+                        oBinding.filter(aFilters);                       
                     }
 
                 }
@@ -61,9 +52,11 @@ sap.ui.define([
             onClear: function () {
                 let oView  = this.getView();
                 let oTable = oView.byId("OrderTable");
-                let oModel = oTable.getModel();
-                oModel.setProperty("/Orders", []);
-                oModel.refresh(true);
+                
+                let oBinding = oTable.getBinding("items");
+                let aFilters = [];
+                oBinding.filter(aFilters);  
+
                 let sOrder = oView.byId("idInpOrder");
                 if (sOrder) {
                     sOrder.setValue("");
