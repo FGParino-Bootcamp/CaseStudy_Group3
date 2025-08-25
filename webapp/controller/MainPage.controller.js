@@ -4,13 +4,14 @@ sap.ui.define([
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     '../model/formatter',
-    'sap/m/MessageBox'
-], function (Controller, JSONModel, Filter, FilterOperator, Formatter, MessageBox) {
+    'sap/m/MessageBox',
+    'sap/ui/core/date/UI5Date'
+], function (Controller, JSONModel, Filter, FilterOperator, Formatter, MessageBox, Date) {
         "use strict";
         return Controller.extend("casestudy.training.casestudyg3.controller.MainPage", {
             formatter:Formatter,
             onInit: function() {   
-                let oTable = this.byId("OrderTable");
+                var oTable = this.byId("OrderTable");
                 oTable.attachUpdateFinished(function(oEvent) {
                     let iCount = oEvent.getParameter("total");
                     let oCount = this.byId("idOrderCount"); 
@@ -24,24 +25,33 @@ sap.ui.define([
             });
                 this.getView().setModel(globalVar, "FragmentData");      
             },
+
             onSearch: function () {
-                let oView  = this.getView();
-                let oTable = oView.byId("OrderTable");
+                var oView  = this.getView();
+                var oTable = oView.byId("OrderTable");
                 if (oTable) {
-                    let oBinding = oTable.getBinding("items");
-                    let aFilters = [];
-                    let sOrder = oView.byId("idInpOrder");
-                    let sOrderValue = sOrder.getValue();
+                    var oBinding = oTable.getBinding("items");
+                    var aFilters = [];
+                    var sOrder = oView.byId("idInpOrder");
+                    var sOrderValue = sOrder.getValue();
                     if (sOrderValue) {
                         aFilters.push(new Filter("OrderID", FilterOperator.EQ, sOrderValue));
                     }
-                    let sCDate = oView.byId("idInpCreDate");
-                    let sDateValue = sCDate.getValue();
+                    var sCDate = oView.byId("idInpCreDate");
+                    var sDateValue = sCDate.getDateValue();
                     if (sDateValue) {
-                        aFilters.push(new Filter("CreationDate", FilterOperator.EQ, sDateValue));
+                        //let iMilliseconds = sDateValue.getTime();
+                        //let odataDateFormat = "/Date(" + iMilliseconds + ")/";
+                        //var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({pattern: "yyyy-MM-dd"});
+                        //var sFormattedDate = oDateFormat.format(sDateValue);
+                        var sIsoStringUTC = sDateValue.toISOString();
+                        var oCurrentDate = Date.getInstance();
+                        var sIsoStringUTC2 = oCurrentDate.toISOString();
+                        
+                        aFilters.push(new Filter("CreationDate", FilterOperator.BT, sIsoStringUTC, sIsoStringUTC2 ));
                     } 
-                    let sStatus = oView.byId("idInpStatus");
-                    let sStatusValue = sStatus.getSelectedKeys();   
+                    var sStatus = oView.byId("idInpStatus");
+                    var sStatusValue = sStatus.getSelectedKeys();   
                     if (sStatusValue) {
                         for (var i = 0; i < sStatusValue.length; i++) {
                                 aFilters.push(new Filter("Status", FilterOperator.EQ, sStatusValue[i]));  
@@ -54,22 +64,21 @@ sap.ui.define([
                 }
 		    },
             onClear: function () {
-                let oView  = this.getView();
-                let oTable = oView.byId("OrderTable");
-                
-                let oBinding = oTable.getBinding("items");
-                let aFilters = [];
+                var oView  = this.getView();
+                var oTable = oView.byId("OrderTable");
+                var oBinding = oTable.getBinding("items");
+                var aFilters = [];
                 oBinding.filter(aFilters);  
 
-                let sOrder = oView.byId("idInpOrder");
+                var sOrder = oView.byId("idInpOrder");
                 if (sOrder) {
                     sOrder.setValue("");
                 }
-                let sCDate = oView.byId("idInpCreDate");
+                var sCDate = oView.byId("idInpCreDate");
                 if (sCDate) {
                     sCDate.setValue("");
                 }
-                let sStatus = oView.byId("idInpStatus");
+                var sStatus = oView.byId("idInpStatus");
                 if (sStatus) {
                     sStatus.setSelectedKeys([]);
                 }
@@ -80,19 +89,19 @@ sap.ui.define([
                 oRouter.navTo("RouteCreatePage");            
             },
             onSelectOrder: function (oEvent) {
-                let oSelectedItem= oEvent.getSource();
+                var oSelectedItem= oEvent.getSource();
                 if (oSelectedItem) {
                     var oSelectedObject = oSelectedItem.getBindingContext().getObject();
                     var sSelectedKey = oSelectedObject.OrderID;
                 }
                 //Navigate to Display Page
-                let oRouter = this.getOwnerComponent().getRouter();
+                var oRouter = this.getOwnerComponent().getRouter();
                 oRouter.navTo("RouteDisplayPage", { OrderID: sSelectedKey });
             },
             onDeleteOrder: function () {
-                let oView  = this.getView();
-                let oTable = oView.byId("OrderTable");
-                let oSelectedItems = oTable.getSelectedItems();
+                var oView  = this.getView();
+                var oTable = oView.byId("OrderTable");
+                var oSelectedItems = oTable.getSelectedItems();
                 if (oSelectedItems.length === 0) {
                     MessageBox.show("Please select an item from the table.",
                         {
@@ -109,7 +118,7 @@ sap.ui.define([
 
             },
             onConfirm: function (count, fragment) {  
-                let sAction = fragment.getProperty("/actionDelete");
+                var sAction = fragment.getProperty("/actionDelete");
                 if (sAction) {
                     fragment.setProperty("/text", "Are you sure you want to delete " + count + " item(s)?");              
                 }
@@ -124,10 +133,10 @@ sap.ui.define([
             },
 
             onYes: function (oEvent) {
-                let oView  = this.getView();
-                let oTable = oView.byId("OrderTable");
+                var oView  = this.getView();
+                var oTable = oView.byId("OrderTable");
                 var oModel = this.getOwnerComponent().getModel();
-                let oSelectedItems = oTable.getSelectedItems();
+                var oSelectedItems = oTable.getSelectedItems();
                 if (oSelectedItems.length > 0) {
 
                     oSelectedItems.forEach(function(oItem) {
