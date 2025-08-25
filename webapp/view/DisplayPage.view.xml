@@ -2,7 +2,17 @@
 xmlns:mvc="sap.ui.core.mvc" 
 xmlns="sap.m" 
 xmlns:f="sap.ui.layout.form">
-    <Page id="idDisplayPage" title="{i18n>title}">
-    <f:SimpleForm id="idDisplayForm" title="Order Detail"></f:SimpleForm>
+    <Page id="idDisplayPage" title="{i18n>dispOrder}">
+    <List id="idList" items="{/Orders}">
+        <items>
+            <CustomListItem id="custListItem">
+                <Text id="dispOrdNumId" text="Order Number: {OrderID}"/>
+                <Text id="dispCretDatId" text="Creation Date: {CreationDate}"/>
+                <Text id="dispRecPlantId" text="Receiving Plant: {ReceivingPlant}"/>
+                <Text id="disDelPlantId" text="Delivering Plant: {DeliveringPlant}"/>
+                <Text id="disStatId" text="Status: {Status}"/>
+            </CustomListItem>
+        </items>
+    </List>
     </Page>
 </mvc:View>
