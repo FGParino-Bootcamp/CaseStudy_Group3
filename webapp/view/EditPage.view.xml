@@ -1,0 +1,81 @@
+<mvc:View
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core"
+  xmlns:f="sap.ui.layout.form"
+  controllerName="casestudy.training.casestudyg3.controller.EditPage"
+  core:require="{
+    fmt: 'casestudy/training/casestudyg3/model/formatter'
+  }">
+ 
+  <Page id="editPage" title="Edit Order">
+    <content>
+
+      <Panel id="idPanelOrderHeaderEdit" headerText="Order Detail">
+        <f:SimpleForm id="idFormHeaderEdit" editable="true" layout="ResponsiveGridLayout"
+                      labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12">
+          <Label id="idLblOrderEdit" text="Order Number"/>
+          <Input id="idInpOrderEdit" value="{OrderID}" editable="false" width="20rem"/>
+ 
+          <Label id="idLblCreDateEdit" text="Created On"/>
+          <Input id="idInpCreOnEdit"
+                 value="{ path:'CreationDate', formatter: '.fmt.formatDate' }"
+                 editable="false" width="20rem"/>
+ 
+          <Label id="idLblRecvPlantEdit" text="Receiving Plant"/>
+          <Input id="idInpRecvPlantEdit" value="{ReceivingPlant}" editable="false" width="20rem"/>
+ 
+          <Label id="idLblDelvPlantEdit" text="Delivering Plant"/>
+          <Input id="idInpDelvPlantEdit" value="{DeliveringPlant}" editable="false" width="20rem"/>
+ 
+          <Label id="idLblStatusEdit" text="Status"/>
+          <ComboBox id="idSelStatusEdit" selectedKey="{Status}" width="20rem">
+            <core:Item id="_IDGenItem5" key="Created" text="Created"/>
+            <core:Item id="_IDGenItem" key="Released" text="Released"/>
+            <core:Item id="_IDGenItem6" key="Partially Completed" text="Partially Completed"/>
+            <core:Item id="_IDGenItem7" key="Delivered" text="Delivered"/>
+          </ComboBox>
+        </f:SimpleForm>
+      </Panel>
+ 
+      <Panel id="idPanelItemsEdit" headerText="Product">
+        <headerToolbar>
+          <Toolbar id="idTbItemsEdit">
+            <Text id="idTxtItemsCountEdit" text="Product (0)"/>
+            <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+            <Button id="btnAddItem" icon="sap-icon://add" press=".onAddItem"/>
+            <Button id="btnDeleteItem" icon="sap-icon://delete" press=".onDeleteItem"/>
+          </Toolbar>
+        </headerToolbar>
+ 
+        <Table id="ItemTable" mode="MultiSelect" items="{details>/Order_Details}">
+          <columns>
+            <Column id="idColProdEdit"><Text id="_IDGenText6" text="Product Name"/></Column>
+            <Column id="idColQtyEdit"  hAlign="Begin"><Text id="_IDGenText7" text="Quantity"/></Column>
+            <Column id="idColUnitEdit" hAlign="Begin"><Text id="_IDGenText8" text="Unit Price"/></Column>
+            <Column id="idColTotEdit"  hAlign="Begin"><Text id="_IDGenText9" text="Total Price"/></Column>
+          </columns>
+          <items>
+            <ColumnListItem id="idCliItemEdit">
+              <cells>
+                <Text id="_IDGenText" text="{details>ProductName}"/>
+                <Input id="idInpQtyEdit" value="{details>Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
+                <Text id="idTextUnitPriceEdit" text="{details>UnitPrice}"/>
+                <Text id="idTextTotalPriceEdit" text="{details>TotalPrice}"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
+ 
+    </content>
+ 
+    <footer>
+      <Toolbar id="idFooterEdit" design="Transparent">
+        <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
+        <Button id="btnSave"   text="Save"   type="Emphasized" press=".onSave"/>
+        <Button id="btnCancel" text="Cancel" type="Reject"     press=".onCancel"/>
+      </Toolbar>
+    </footer>
+  </Page>
+</mvc:View>

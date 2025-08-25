@@ -63,10 +63,13 @@
           "bundleName": "casestudy.training.casestudyg3.i18n.i18n"
         }
       },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {}
+    "": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "localService/mainService/data/Orders.json"
+      },
+      "details": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "localService/mainService/data/Order_Details.json"
       }
     },
     "resources": {
@@ -103,7 +106,12 @@
           "name": "RouteDisplayPage",
           "pattern": "OrderDetal/{OrderID}",
           "target": ["TargetDisplayPage"]
-        }         
+        },
+        { 
+          "name": "RouteEditPage", 
+          "pattern": "Edit/{OrderID}",
+           "target": ["TargetEditPage"]
+        }    
       ],
       "targets": {
         "TargetMainPage": {
@@ -117,7 +125,12 @@
         "TargetDisplayPage": {
           "viewId": "DisplayPage",
           "viewName": "DisplayPage"
-        }             
+        },
+        "TargetEditPage": 
+        { 
+          "viewId": "EditPage", 
+          "viewName": "EditPage" 
+        }       
       }
     },
     "rootView": {
