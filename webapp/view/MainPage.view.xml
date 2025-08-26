@@ -13,7 +13,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 				</fb:FilterGroupItem>
 				<fb:FilterGroupItem id="idGenFilterGroupItem2" name="Creation Date" label="Creation Date" groupName="Group1" visibleInFilterBar="true">
 					<fb:control>
-						<DatePicker id="idInpCreDate" placeholder="Creation Date" ></DatePicker>
+						<DatePicker id="idInpCreDate" placeholder="Creation Date" displayFormat="dd MMM yyyy"></DatePicker>
 					</fb:control>
 				</fb:FilterGroupItem>
 				<fb:FilterGroupItem id="idGenFilterGroupItem3" name="Status" label="Status" groupName="Group1" visibleInFilterBar="true">
