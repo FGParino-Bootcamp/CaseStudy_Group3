@@ -1,14 +1,16 @@
 sap.ui.define([
   "sap/ui/core/mvc/Controller",
+  'sap/ui/model/json/JSONModel',
   "sap/m/MessageBox",
   "sap/m/MessageToast",
   "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator"
-], function (Controller, MessageBox, MessageToast, Filter, FilterOperator) {
+  "sap/ui/model/FilterOperator",
+  '../model/formatter',
+], function (Controller, JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Formatter) {
   "use strict";
  
 return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
- 
+    formatter:Formatter,
     onInit: function () {
       this.getOwnerComponent().getRouter()
         .getRoute("RouteEditPage")
@@ -16,26 +18,44 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     },
  
     _onRouteMatched: function (oEvent) {
-      this._sOrderId = oEvent.getParameter("arguments").OrderID;
+      var sOrderId = oEvent.getParameter("arguments").OrderID;
  
       const oModel = this.getView().getModel();
-      const aOrders = oModel.getProperty("/Orders") || [];
-      const idx = aOrders.findIndex(o => String(o.OrderID) === String(this._sOrderId));
-      if (idx === -1) { MessageBox.error("Order not found"); return; }
-      this._sOrderPath = `/Orders/${idx}`;
-      this.getView().bindElement(this._sOrderPath);
+      var opanel1 = this.getView().byId("idPanelOrderHeaderEdit");
+      var sReadUri = oModel.createKey("/Orders",
+                {
+                    OrderID: sOrderId
+                }
+            );
+      oModel.read(sReadUri,{
+          success: function (oData) {
+            if (oData) {
+              
+                var oOrderModel = new JSONModel(oData);
+                opanel1.setModel(oOrderModel, "OrderData");
+            }
+          },
+          error: function (data){
+
+          }
+      })            
+      //const aOrders = oModel.getProperty("/Orders") || [];
+      //const idx = aOrders.findIndex(o => String(o.OrderID) === String(this._sOrderId));
+      //if (idx === -1) { MessageBox.error("Order not found"); return; }
+      //this._sOrderPath = `/Orders/${idx}`;
+      //this.getView().bindElement(this._sOrderPath);
  
-      const oTable = this.byId("ItemTable");
-      const oBinding = oTable.getBinding("items");
-      oBinding.filter([ new Filter("OrderID", FilterOperator.EQ, Number(this._sOrderId)) ]);
+     // const oTable = this.byId("ItemTable");
+      //const oBinding = oTable.getBinding("items");
+      //oBinding.filter([ new Filter("OrderID", FilterOperator.EQ, Number(this._sOrderId)) ]);
  
-      setTimeout(() => this._updateCounter(), 0);
+      //setTimeout(() => this._updateCounter(), 0);
  
-      this._snapshot = JSON.parse(JSON.stringify({
-        header: aOrders[idx],
-        details: this.getView().getModel("details").getProperty("/Order_Details")
-                  .filter(r => Number(r.OrderID) === Number(this._sOrderId))
-      }));
+      //this._snapshot = JSON.parse(JSON.stringify({
+        //header: aOrders[idx],
+        //details: this.getView().getModel("details").getProperty("/Order_Details")
+                  //.filter(r => Number(r.OrderID) === Number(this._sOrderId))
+      //}));
     },
  
     _updateCounter: function () {

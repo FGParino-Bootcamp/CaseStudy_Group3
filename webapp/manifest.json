@@ -63,13 +63,10 @@
           "bundleName": "casestudy.training.casestudyg3.i18n.i18n"
         }
       },
-    "": {
-        "type": "sap.ui.model.json.JSONModel",
-        "uri": "localService/mainService/data/Orders.json"
-      },
-      "details": {
-        "type": "sap.ui.model.json.JSONModel",
-        "uri": "localService/mainService/data/Order_Details.json"
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
       }
     },
     "resources": {
@@ -104,7 +101,7 @@
         },
         {
           "name": "RouteDisplayPage",
-          "pattern": "OrderDetal/{OrderID}",
+          "pattern": "OrderDetail/{OrderID}",
           "target": ["TargetDisplayPage"]
         },
         { 

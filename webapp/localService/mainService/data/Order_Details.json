@@ -1,5 +1,4 @@
-   {
-        "Order_Details" :
+
         [
             {
                 "OrderID": 1001,
@@ -79,4 +78,3 @@
                 "TotalPrice": 3500
             }
         ]
-}
