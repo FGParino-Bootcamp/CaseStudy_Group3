@@ -4,7 +4,7 @@
             <EntityType Name="Order_Detail">
                 <Key>
                     <PropertyRef Name="OrderID"/>
-                    <PropertyRef Name="ProductName"/>
+
                 </Key>
                 <Property Name="OrderID" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="ProductName" Type="Edm.String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="true"/>
@@ -24,6 +24,7 @@
                 <Property Name="DeliveringPlant" Type="Edm.String" Nullable="false"/>
                 <Property Name="DPlantDesc" Type="Edm.String" Nullable="false"/>
                 <Property Name="Status" Type="Edm.String" Nullable="false"/>
+                <Property Name="ConvertedDate" Type="Edm.String" Nullable="false"/>
                 <NavigationProperty Name="Order_Details" Relationship="ProjectModel.Order_Details_Orders" ToRole="Order_Details" FromRole="Orders"/>
             </EntityType>
             <Association Name="Order_Details_Orders">
