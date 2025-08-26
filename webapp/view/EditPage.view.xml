@@ -15,21 +15,21 @@
         <f:SimpleForm id="idFormHeaderEdit" editable="true" layout="ResponsiveGridLayout"
                       labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12">
           <Label id="idLblOrderEdit" text="Order Number"/>
-          <Input id="idInpOrderEdit" value="{OrderID}" editable="false" width="20rem"/>
+          <Input id="idInpOrderEdit" value="{OrderData>/OrderID}" editable="false" width="20rem"/>
  
           <Label id="idLblCreDateEdit" text="Created On"/>
           <Input id="idInpCreOnEdit"
-                 value="{ path:'CreationDate', formatter: '.fmt.formatDate' }"
+                 value="{ parts: [ {path: 'OrderData>/CreationDate'} ], formatter: '.formatter.formatDate' }"
                  editable="false" width="20rem"/>
  
           <Label id="idLblRecvPlantEdit" text="Receiving Plant"/>
-          <Input id="idInpRecvPlantEdit" value="{ReceivingPlant}" editable="false" width="20rem"/>
+          <Input id="idInpRecvPlantEdit" value="{OrderData>/ReceivingPlant} - {OrderData>/RPlantDesc}" editable="false" width="20rem"/>
  
           <Label id="idLblDelvPlantEdit" text="Delivering Plant"/>
-          <Input id="idInpDelvPlantEdit" value="{DeliveringPlant}" editable="false" width="20rem"/>
+          <Input id="idInpDelvPlantEdit" value="{OrderData>/DeliveringPlant} - {OrderData>/DPlantDesc}" editable="false" width="20rem"/>
  
           <Label id="idLblStatusEdit" text="Status"/>
-          <ComboBox id="idSelStatusEdit" selectedKey="{Status}" width="20rem">
+          <ComboBox id="idSelStatusEdit" selectedKey="{OrderData>/Status}" width="20rem">
             <core:Item id="_IDGenItem5" key="Created" text="Created"/>
             <core:Item id="_IDGenItem" key="Released" text="Released"/>
             <core:Item id="_IDGenItem6" key="Partially Completed" text="Partially Completed"/>
@@ -48,7 +48,7 @@
           </Toolbar>
         </headerToolbar>
  
-        <Table id="ItemTable" mode="MultiSelect" items="{details>/Order_Details}">
+        <Table id="ItemTable" mode="MultiSelect">
           <columns>
             <Column id="idColProdEdit"><Text id="_IDGenText6" text="Product Name"/></Column>
             <Column id="idColQtyEdit"  hAlign="Begin"><Text id="_IDGenText7" text="Quantity"/></Column>
@@ -58,10 +58,10 @@
           <items>
             <ColumnListItem id="idCliItemEdit">
               <cells>
-                <Text id="_IDGenText" text="{details>ProductName}"/>
-                <Input id="idInpQtyEdit" value="{details>Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
-                <Text id="idTextUnitPriceEdit" text="{details>UnitPrice}"/>
-                <Text id="idTextTotalPriceEdit" text="{details>TotalPrice}"/>
+                <Text id="_IDGenText" text="{ProductName}"/>
+                <Input id="idInpQtyEdit" value="{Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
+                <Text id="idTextUnitPriceEdit" text="{UnitPrice}"/>
+                <Text id="idTextTotalPriceEdit" text="{TotalPrice}"/>
               </cells>
             </ColumnListItem>
           </items>
