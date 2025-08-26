@@ -43,6 +43,8 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
           },
           error: function (oError){
             console.error("Error reading data:", oError);
+          }
+      })            
           },
       }),
       oModel.read(sReadUri2,{
@@ -57,10 +59,6 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
             console.error("Error reading data:", oError);
           },
       })      
-      
-
-
-
       //const aOrders = oModel.getProperty("/Orders") || [];
       //const idx = aOrders.findIndex(o => String(o.OrderID) === String(this._sOrderId));
       //if (idx === -1) { MessageBox.error("Order not found"); return; }
@@ -132,8 +130,7 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     },
  
     _addDetailRow: function ({ ProductName, Quantity, UnitPrice }) {
-      var oTable = this.getView().byId("ItemTable");
-      const oDetails = this.getView().getModel();
+      const oDetails = this.getView().getModel("details");
       const a = oDetails.getProperty("/Order_Details");
       a.push({
         OrderID: Number(this._sOrderId),
