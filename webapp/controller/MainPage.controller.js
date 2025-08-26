@@ -116,7 +116,7 @@ sap.ui.define([
                 }
                 //Navigate to Display Page
                 var oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("RouteEditPage", { OrderID: sSelectedKey });
+                oRouter.navTo("RouteDisplayPage", { OrderID: sSelectedKey });
             },
             onDeleteOrder: function () {
                 var oView  = this.getView();

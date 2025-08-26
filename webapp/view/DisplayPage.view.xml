@@ -29,7 +29,11 @@ xmlns:f="sap.ui.layout.form">
       </Panel>
  
       <Panel id="idDisplayViewPanelOrders" headerText="Products">
-        <Table id="tabOrd" items="{/Order_Details}">
+        <Table id="tabOrd" 
+        			 autoPopinMode="true"
+			        items="{ path: '/Order_Details',
+						sorter: { path: 'OrderID',
+								  descending: false } }" >
           <columns>
             <Column id="idColProdEdit1"><Text id="_IDGenText61" text="Product Name"/></Column>
             <Column id="idColQtyEdit1"  hAlign="Begin"><Text id="_IDGenText71" text="Quantity"/></Column>
@@ -40,7 +44,7 @@ xmlns:f="sap.ui.layout.form">
             <ColumnListItem id="colListItem">
               <cells>
                 <Text id="_IDGenText1" text="{ProductName}"/>
-                <Input id="idInpQtyEdit1" value="{Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
+                <Text id="idInpQtyEdit1" text="{Quantity}"/>
                 <Text id="idTextUnitPriceEdit1" text="{UnitPrice}"/>
                 <Text id="idTextTotalPriceEdit1" text="{TotalPrice}"/>
               </cells>
