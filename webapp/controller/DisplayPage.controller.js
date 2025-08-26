@@ -2,10 +2,15 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     'sap/ui/model/json/JSONModel',
     'sap/ui/core/UIComponent',
-], function (Controller, JSONModel, Component) {
+    '../model/formatter',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator'
+], function (Controller, JSONModel, Component, Formatter, Filter, FilterOperator) {
         "use strict";
-
+        var orderID;
         return Controller.extend("casestudy.training.casestudyg3.controller.DisplayPage", {
+            formatter:Formatter,
+
             onInit: function() {  
                 var oRouter = this.getOwnerComponent().getRouter();
                 oRouter.getRoute("RouteDisplayPage").attachPatternMatched(this._onObjectMatched, this);
@@ -13,7 +18,7 @@ sap.ui.define([
 
             _onObjectMatched: function(oEvent) {
             var sOrderId = oEvent.getParameter("arguments").OrderID;
-        
+            orderID = sOrderId;
             var oModel = this.getView().getModel();
             var opanel1 = this.getView().byId("idDisplayViewPanelOrderDetail");
             var sReadUri = oModel.createKey("/Orders",
@@ -33,16 +38,17 @@ sap.ui.define([
                     console.error("Error reading data:", oError);
                 }
             })
-
-                var oTab = this.getView().byId("tabOrd");
-                var oBinding = oTab.getBinding("items");
-                var oFilter = new sap.ui.model.Filter("OrderID", sap.ui.model.FilterOperator.EQ, sOrderId);
-                oBinding.filter([oFilter]); 
-
+            var aFilters = [];
+            aFilters.push(new Filter("OrderID", FilterOperator.EQ, sOrderId));
+            var oTab = this.getView().byId("tabOrd");
+            var oBinding = oTab.getBinding("items");
+            oBinding.filter(aFilters); 
             },
 
             onEdit: function(){
-                this.getOwnerComponent().getRouter().navTo("RouteEditPage"); 
+                //Navigate to Display Page
+                var oRouter = this.getOwnerComponent().getRouter();
+                oRouter.navTo("RouteEditPage", { OrderID: orderID });
 
             },
 

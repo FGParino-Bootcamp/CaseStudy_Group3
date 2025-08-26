@@ -24,14 +24,6 @@
           "localUri": "localService/mainService/metadata.xml",
           "odataVersion": "2.0"
         }
-      },
-      "OrderModel" : {
-        "type": "JSON",
-        "uri":"model/Orders.json"
-      },
-      "OrderDetailsModel" : {
-        "type": "JSON",
-        "uri":"model/Order_Details.json"
       }
     }    
   },
@@ -75,15 +67,7 @@
         "dataSource": "mainService",
         "preload": true,
         "settings": {}
-      },
-      "OrderModel":{
-              "type": "sap.ui.model.json.JSONModel",
-              "dataSource": "OrderModel"
-            },
-      "OrderDetailsModel":{
-              "type": "sap.ui.model.json.JSONModel",
-              "dataSource": "OrderDetailsModel"
-            }    
+      } 
     },
     "resources": {
       "css": [
