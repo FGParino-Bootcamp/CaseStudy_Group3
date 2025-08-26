@@ -20,9 +20,15 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     _onRouteMatched: function (oEvent) {
       var sOrderId = oEvent.getParameter("arguments").OrderID;
  
-      const oModel = this.getView().getModel();
+      const oModel = this.getOwnerComponent().getModel();
       var opanel1 = this.getView().byId("idPanelOrderHeaderEdit");
+      var oTable  = this.getView().byId("ItemTable");
       var sReadUri = oModel.createKey("/Orders",
+                {
+                    OrderID: sOrderId
+                }
+            );
+      var sReadUri2 = oModel.createKey("/Order_Details",
                 {
                     OrderID: sOrderId
                 }
@@ -37,8 +43,24 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
           },
           error: function (oError){
             console.error("Error reading data:", oError);
-          }
-      })            
+          },
+      }),
+      oModel.read(sReadUri2,{
+          success: function (oData2) {
+            if (oData2) {
+                var oBinding = oTable.getBinding("items");
+                var oFilter = new sap.ui.model.Filter("OrderID", FilterOperator.EQ, sOrderId);
+                oBinding.filter([oFilter]);
+            }
+          },
+          error: function (oError){
+            console.error("Error reading data:", oError);
+          },
+      })      
+      
+
+
+
       //const aOrders = oModel.getProperty("/Orders") || [];
       //const idx = aOrders.findIndex(o => String(o.OrderID) === String(this._sOrderId));
       //if (idx === -1) { MessageBox.error("Order not found"); return; }
@@ -110,7 +132,8 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     },
  
     _addDetailRow: function ({ ProductName, Quantity, UnitPrice }) {
-      const oDetails = this.getView().getModel("details");
+      var oTable = this.getView().byId("ItemTable");
+      const oDetails = this.getView().getModel();
       const a = oDetails.getProperty("/Order_Details");
       a.push({
         OrderID: Number(this._sOrderId),

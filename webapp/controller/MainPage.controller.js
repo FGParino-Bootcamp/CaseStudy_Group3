@@ -5,8 +5,8 @@ sap.ui.define([
     'sap/ui/model/FilterOperator',
     '../model/formatter',
     'sap/m/MessageBox',
-    'sap/ui/core/date/UI5Date'
-], function (Controller, JSONModel, Filter, FilterOperator, Formatter, MessageBox, Date) {
+    'sap/ui/core/format/DateFormat',
+], function (Controller, JSONModel, Filter, FilterOperator, Formatter, MessageBox, DateFormat) {
         "use strict";
         return Controller.extend("casestudy.training.casestudyg3.controller.MainPage", {
             formatter:Formatter,
@@ -18,7 +18,8 @@ sap.ui.define([
                     if (oCount) {
                     oCount.setText("Orders(" + iCount + ")");
                     }
-                }.bind(this));  
+                }.bind(this)); 
+                //Trying out fragment/passing of data via JSON Model 
                 var globalVar = new JSONModel({ 
                     actionDelete: false,
                     text:         ""
@@ -27,6 +28,7 @@ sap.ui.define([
             },
 
             onSearch: function () {
+                this.fnValidateOrder();
                 var oView  = this.getView();
                 var oTable = oView.byId("OrderTable");
                 if (oTable) {
@@ -40,15 +42,10 @@ sap.ui.define([
                     var sCDate = oView.byId("idInpCreDate");
                     var sDateValue = sCDate.getDateValue();
                     if (sDateValue) {
-                        //let iMilliseconds = sDateValue.getTime();
-                        //let odataDateFormat = "/Date(" + iMilliseconds + ")/";
-                        //var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({pattern: "yyyy-MM-dd"});
-                        //var sFormattedDate = oDateFormat.format(sDateValue);
-                        var sIsoStringUTC = sDateValue.toISOString();
-                        var oCurrentDate = Date.getInstance();
-                        var sIsoStringUTC2 = oCurrentDate.toISOString();
-                        
-                        aFilters.push(new Filter("CreationDate", FilterOperator.BT, sIsoStringUTC, sIsoStringUTC2 ));
+                        var milliseconds = sDateValue.getTime();
+                        var oDateFormat = DateFormat.getDateInstance({pattern: "yyyyMMdd"});
+                        var sFormattedDate = oDateFormat.format(sDateValue);
+                        aFilters.push(new Filter("ConvertedDate", FilterOperator.EQ, sFormattedDate ));
                     } 
                     var sStatus = oView.byId("idInpStatus");
                     var sStatusValue = sStatus.getSelectedKeys();   
@@ -63,6 +60,29 @@ sap.ui.define([
 
                 }
 		    },
+            fnValidateOrder: function() {
+                var oView  = this.getView();
+                var sOrder = oView.byId("idInpOrder");
+                var sOrderValue = sOrder.getValue();
+                if (isNaN(sOrderValue)) {
+                    MessageBox.show("Invalid Order Input.Please enter a number.",
+                        {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error",
+                            actions: [MessageBox.Action.OK],
+                        } );                    
+                }
+                var sCDate = oView.byId("idInpCreDate");
+                var sDateValue = sCDate.getDateValue();
+                if (sDateValue===null) {
+                    MessageBox.show("Invalid Date Input. Please enter valid date.",
+                        {
+                            icon: MessageBox.Icon.ERROR,
+                            title: "Error",
+                            actions: [MessageBox.Action.OK],
+                        } );                       
+                }
+            },
             onClear: function () {
                 var oView  = this.getView();
                 var oTable = oView.byId("OrderTable");
@@ -96,7 +116,7 @@ sap.ui.define([
                 }
                 //Navigate to Display Page
                 var oRouter = this.getOwnerComponent().getRouter();
-                oRouter.navTo("RouteDisplayPage", { OrderID: sSelectedKey });
+                oRouter.navTo("RouteEditPage", { OrderID: sSelectedKey });
             },
             onDeleteOrder: function () {
                 var oView  = this.getView();
@@ -107,7 +127,7 @@ sap.ui.define([
                         {
                             icon: MessageBox.Icon.ERROR,
                             title: "Error",
-                            actions: [MessageBox.Action.OK], // Optional: Define actions (e.g., OK, YES, NO)
+                            actions: [MessageBox.Action.OK],
                         } );
 
                 } else {
@@ -143,10 +163,40 @@ sap.ui.define([
                         let sPath = oItem.getBindingContextPath();
                         
                         oModel.remove(sPath, {  
-                                        success: function (oData, oResponse) {
-                                            oModel.refresh(true);
+                                        success: function (oData) {
+                                            let oBindingContext = oItem.getBindingContext();
+                                            let sKeyValue = oBindingContext.getProperty("OrderID"); 
+                                            let sReadUri = oModel.createKey("/Order_Details",
+                                                        {
+                                                            OrderID: sKeyValue
+                                                        }
+                                                    );
+                                            oModel.remove(sReadUri, {  
+                                                            success: function () {
+                                                            MessageBox.show("Selected Order(s) deleted successfully.", 
+                                                                {
+                                                                    icon: MessageBox.Icon.INFORMATION,
+                                                                    title: "Success",
+                                                                    actions: [MessageBox.Action.OK], 
+                                                                } );                                                                
+                                                            },
+                                                            error: function (oError){
+                                                            MessageBox.show("Deletion Failed.", 
+                                                                {
+                                                                    icon: MessageBox.Icon.ERROR,
+                                                                    title: "Error",
+                                                                    actions: [MessageBox.Action.OK], 
+                                                                } );   
+                                                            }
+                                                        });
                                         },
                                         error: function (oError){
+                                            MessageBox.show("Deletion Failed.", 
+                                                {
+                                                    icon: MessageBox.Icon.ERROR,
+                                                    title: "Error",
+                                                    actions: [MessageBox.Action.OK], 
+                                                } );   
                                         }
                                     });
                     });

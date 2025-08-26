@@ -48,7 +48,7 @@
           </Toolbar>
         </headerToolbar>
  
-        <Table id="ItemTable" mode="MultiSelect">
+        <Table id="ItemTable" mode="MultiSelect" items="{/Order_Details}">
           <columns>
             <Column id="idColProdEdit"><Text id="_IDGenText6" text="Product Name"/></Column>
             <Column id="idColQtyEdit"  hAlign="Begin"><Text id="_IDGenText7" text="Quantity"/></Column>
