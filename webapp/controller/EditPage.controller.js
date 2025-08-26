@@ -35,8 +35,8 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
                 opanel1.setModel(oOrderModel, "OrderData");
             }
           },
-          error: function (data){
-
+          error: function (oError){
+            console.error("Error reading data:", oError);
           }
       })            
       //const aOrders = oModel.getProperty("/Orders") || [];
