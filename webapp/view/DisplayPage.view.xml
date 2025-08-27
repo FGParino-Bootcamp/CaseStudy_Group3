@@ -1,0 +1,67 @@
+<mvc:View xmlns:core="sap.ui.core" controllerName="casestudy.training.casestudyg3.controller.DisplayPage"
+xmlns:mvc="sap.ui.core.mvc" 
+xmlns="sap.m" 
+xmlns:f="sap.ui.layout.form">
+    <Page id="idDisplayPage" title="{i18n>dispOrder}">
+
+<content>
+
+      <Panel id="idDisplayViewPanelOrderDetail" headerText="Order Detail">
+        <f:SimpleForm id="simpformOrderDetail" editable="true" layout="ResponsiveGridLayout"
+                      labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12">
+          <Label id="ordNumLbl" text="Order Number"/>
+          <Input id="ordNumIpn" value="{OrderData>/OrderID}" editable="false" width="20rem"/>
+ 
+          <Label id="cretOnLbl" text="Created On"/>
+          <Input id="cretOnInp"
+                 value="{ parts: [ {path: 'OrderData>/CreationDate'} ], formatter: '.formatter.formatDate' }"
+                 editable="false" width="20rem"/>
+ 
+          <Label id="recvPlntLbl" text="Receiving Plant"/>
+          <Input id="recvPlntInp" value="{OrderData>/ReceivingPlant} - {OrderData>/RPlantDesc}" editable="false" width="20rem"/>
+ 
+          <Label id="delPlntLbl" text="Delivering Plant"/>
+          <Input id="delPlntInp" value="{OrderData>/DeliveringPlant} - {OrderData>/DPlantDesc}" editable="false" width="20rem"/>
+ 
+          <Label id="statLbl" text="Status"/>
+          <Input id="statInp" value="{OrderData>/Status}" editable="false" width="20rem"/>
+        </f:SimpleForm>
+      </Panel>
+ 
+      <Panel id="idDisplayViewPanelOrders" headerText="Products">
+        <Table id="tabOrd" 
+        			 autoPopinMode="true"
+			        items="{ path: '/Order_Details',
+						sorter: { path: 'OrderID',
+								  descending: false } }" >
+          <columns>
+            <Column id="idColProdEdit1"><Text id="_IDGenText61" text="Product Name"/></Column>
+            <Column id="idColQtyEdit1"  hAlign="Begin"><Text id="_IDGenText71" text="Quantity"/></Column>
+            <Column id="idColUnitEdit1" hAlign="Begin"><Text id="_IDGenText81" text="Unit Price"/></Column>
+            <Column id="idColTotEdit1"  hAlign="Begin"><Text id="_IDGenText91" text="Total Price"/></Column>
+          </columns>
+          <items>
+            <ColumnListItem id="colListItem">
+              <cells>
+                <Text id="_IDGenText1" text="{ProductName}"/>
+                <Text id="idInpQtyEdit1" text="{Quantity}"/>
+                <Text id="idTextUnitPriceEdit1" text="{UnitPrice}"/>
+                <Text id="idTextTotalPriceEdit1" text="{TotalPrice}"/>
+              </cells>
+            </ColumnListItem>
+          </items>
+        </Table>
+      </Panel>
+ 
+    </content>
+ 
+    <footer>
+      <Toolbar id="idFooterEdit1" design="Transparent">
+        <ToolbarSpacer id="_IDGenToolbarSpacer11"/>
+        <Button id="btnEdit"   text="Edit"   type="Emphasized" press=".onEdit"/>
+        <Button id="btnCancelDisp" text="Cancel" type="Reject"     press=".onCancel"/>
+      </Toolbar>
+    </footer>
+
+    </Page>
+</mvc:View>

@@ -1,0 +1,20 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<Dialog
+		id="idConfirmationDialog"
+		title="Confirmation"
+		icon="sap-icon://question-mark">
+		<content>
+			<HBox id="idHBox" justifyContent="Center" width="100%">
+				<Text id="idTxtMsg" text="{FragmentData>/text}" />
+			 </HBox>
+		</content>
+		<beginButton>
+			<Button id="idBtnY" text="Yes" press="onYes"/>
+		</beginButton>
+		<endButton>
+			<Button id="idBtnN" text="No" press="onNo"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

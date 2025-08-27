@@ -4,73 +4,71 @@ xmlns="sap.m"
 xmlns:f="sap.ui.layout.form" 
 xmlns:fb="sap.ui.comp.filterbar">
     <Page id="page" title="{i18n>title}">
-		<fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" showClearOnFB="true" clear=".onClear" showFilterConfiguration="false">
+		<fb:FilterBar id="idFilterBar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad" showClearOnFB="true" clear=".onClear" showFilterConfiguration="false">
 			<fb:filterGroupItems>
-				<fb:FilterGroupItem id="_IDGenFilterGroupItem1" name="Order Number" label="Order Number" groupName="Group1" visibleInFilterBar="true">
+				<fb:FilterGroupItem id="idFilterGroupItem1" name="Order Number" label="Order Number" groupName="Group1" visibleInFilterBar="true">
 					<fb:control>
 						<Input id="idInpOrder" placeholder="Order Number" ></Input>
 					</fb:control>
 				</fb:FilterGroupItem>
-				<fb:FilterGroupItem id="_IDGenFilterGroupItem2" name="Creation Date" label="Creation Date" groupName="Group1" visibleInFilterBar="true">
+				<fb:FilterGroupItem id="idGenFilterGroupItem2" name="Creation Date" label="Creation Date" groupName="Group1" visibleInFilterBar="true">
 					<fb:control>
 						<DatePicker id="idInpCreDate" placeholder="Creation Date" displayFormat="dd MMM yyyy"></DatePicker>
 					</fb:control>
 				</fb:FilterGroupItem>
-				<fb:FilterGroupItem id="_IDGenFilterGroupItem3" name="Status" label="Status" groupName="Group1" visibleInFilterBar="true">
+				<fb:FilterGroupItem id="idGenFilterGroupItem3" name="Status" label="Status" groupName="Group1" visibleInFilterBar="true">
 					<fb:control>
 						<MultiComboBox id="idInpStatus" name="Status" selectionChange=".onSelectionChange">
-							<core:Item id="_IDGenItem1" key="Created" text="Created"/>
-							<core:Item id="_IDGenItem2" key="Released" text="Released"/>
-							<core:Item id="_IDGenItem3" key="Partially Completed" text="Partially Completed"/>
-							<core:Item id="_IDGenItem4" key="Delivered" text="Delivered"/>
+							<core:Item id="idMcboxItem1" key="Created" text="Created"/>
+							<core:Item id="idMcboxItem2" key="Released" text="Released"/>
+							<core:Item id="idMcboxItem3" key="Partially Completed" text="Partially Completed"/>
+							<core:Item id="idMcboxItem4" key="Delivered" text="Delivered"/>
 						</MultiComboBox>
 					</fb:control>
 				</fb:FilterGroupItem>
 			</fb:filterGroupItems>
 		</fb:FilterBar>
-		<Table
-			id="OrderTable"
-			inset="false"
-			items="{
-				path: '/Orders',
-				sorter: { path: 'OrderID',
-                                  descending: false } }"
-			mode="MultiSelect"
-		>
+
+		<Table id="OrderTable"
+			   autoPopinMode="true"
+			   items="{ path: '/Orders',
+						sorter: { path: 'OrderID',
+								  descending: false } }"
+				mode="MultiSelect">
 		<headerToolbar>
 			<Toolbar id="idFooter">
-				<Text id="idOrderCount" text="Orders({=${/Orders}.length})"/>
+				<Text id="idOrderCount"/>
 				<ToolbarSpacer id="idSpacerFooter"/>
 				<Button id="btnAdd" icon="sap-icon://add" press="onAddOrder"/>
 				<Button id="btnDelete" icon="sap-icon://delete" press="onDeleteOrder" />
 			</Toolbar>
 		</headerToolbar>
 			<columns>
-				<Column id="_IDGenColumn1">
-					<Text id="_IDGenText1" text="Order Number"/>
+				<Column id="idColumn1">
+					<Text id="idColText1" text="Order Number"/>
 				</Column>
-				<Column id="_IDGenColumn2">
-					<Text id="_IDGenText2" text="Creation Date"/>
+				<Column id="idColumn2">
+					<Text id="idColText2" text="Creation Date"/>
 				</Column>
-				<Column id="_IDGenColumn3">
-					<Text id="_IDGenText3" text="Receiving Plant"/>
+				<Column id="idColumn3">
+					<Text id="idColText3" text="Receiving Plant"/>
 				</Column>
-				<Column id="_IDGenColumn4">
-					<Text id="_IDGenText4" text="Delivering Plant"/>
+				<Column id="idColumn4">
+					<Text id="idColText4" text="Delivering Plant"/>
 				</Column>
-				<Column id="_IDGenColumn5">
-					<Text id="_IDGenText5" text="Status"/>
+				<Column id="idColumn5">
+					<Text id="idColText5" text="Status"/>
 				</Column>
 			</columns>
 
 			<items>
-				<ColumnListItem id="_IDGenColumnListItem" vAlign="Middle">
+				<ColumnListItem id="idColumnListItem" vAlign="Middle" type="Active" press="onSelectOrder" navigated="true">
 					<cells>
 						<Text id="idCoListItem1" text="{OrderID}" />
-                        <Text id="idCoListItem2" text="{ parts: [ {path: 'CreationDate'} ], formatter: '.formatter.formatDate' }"/>
-                        <Text id="idCoListItem3" text="{ReceivingPlant} - {RPlantDesc}" />
-                        <Text id="idCoListItem4" text="{DeliveringPlant} - {DPlantDesc}" />
-                        <ObjectStatus id="idItemStatus" text="{Status}" state="{ path: 'Status', formatter:'.formatter.statusState'}" />
+						<Text id="idCoListItem2" text="{ parts: [ {path: 'CreationDate'} ], formatter: '.formatter.formatDate' }"/>
+						<Text id="idCoListItem3" text="{ReceivingPlant} - {RPlantDesc}" />
+						<Text id="idCoListItem4" text="{DeliveringPlant} - {DPlantDesc}" />	
+						<ObjectStatus id="idItemStatus" text="{Status}" state="{ path: 'Status', formatter:'.formatter.statusState'}" />    
 					</cells>
 				</ColumnListItem>
 			</items>
