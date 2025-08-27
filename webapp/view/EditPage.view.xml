@@ -48,7 +48,7 @@
           </Toolbar>
         </headerToolbar>
  
-        <Table id="ItemTable" mode="MultiSelect" items="{/Order_Details}">
+        <Table id="ItemTable" mode="MultiSelect" items="{DetailModel>/Order_Details}">
           <columns>
             <Column id="idColProdEdit"><Text id="_IDGenText6" text="Product Name"/></Column>
             <Column id="idColQtyEdit"  hAlign="Begin"><Text id="_IDGenText7" text="Quantity"/></Column>
@@ -58,10 +58,10 @@
           <items>
             <ColumnListItem id="idCliItemEdit">
               <cells>
-                <Text id="_IDGenText" text="{ProductName}"/>
-                <Input id="idInpQtyEdit" value="{Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
-                <Text id="idTextUnitPriceEdit" text="{UnitPrice}"/>
-                <Text id="idTextTotalPriceEdit" text="{TotalPrice}"/>
+                <Text id="_IDGenText" text="{DetailModel>ProductName}"/>
+                <Input id="idInpQtyEdit" value="{DetailModel>Quantity}" type="Number" liveChange=".onQtyLiveChange"/>
+                <Text id="idTextUnitPriceEdit" text="{DetailModel>UnitPrice}"/>
+                <Text id="idTextTotalPriceEdit" text="{DetailModel>TotalPrice}"/>
               </cells>
             </ColumnListItem>
           </items>

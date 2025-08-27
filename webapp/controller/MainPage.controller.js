@@ -72,16 +72,6 @@ sap.ui.define([
                             actions: [MessageBox.Action.OK],
                         } );                    
                 }
-                var sCDate = oView.byId("idInpCreDate");
-                var sDateValue = sCDate.getDateValue();
-                if (sDateValue===null) {
-                    MessageBox.show("Invalid Date Input. Please enter valid date.",
-                        {
-                            icon: MessageBox.Icon.ERROR,
-                            title: "Error",
-                            actions: [MessageBox.Action.OK],
-                        } );                       
-                }
             },
             onClear: function () {
                 var oView  = this.getView();
@@ -109,7 +99,7 @@ sap.ui.define([
                 oRouter.navTo("RouteCreatePage");            
             },
             onSelectOrder: function (oEvent) {
-                var oSelectedItem= oEvent.getSource();
+                var oSelectedItem = oEvent.getSource();
                 if (oSelectedItem) {
                     var oSelectedObject = oSelectedItem.getBindingContext().getObject();
                     var sSelectedKey = oSelectedObject.OrderID;
