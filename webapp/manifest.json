@@ -14,6 +14,25 @@
       "id": "@sap/generator-fiori:basic",
       "version": "1.18.5",
       "toolsId": "b5fac327-fc8b-478e-b411-358076f78e4f"
+    },
+       "dataSources": {
+      "mainService": {
+        "uri": "/here/goes/your/serviceurl/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      },
+      "OrderModel" : {
+        "type": "JSON",
+        "uri":"model/Orders.json"
+      },
+      "DetailModel" : {
+        "type": "JSON",
+        "uri":"model/Order_Details.json"
+      }
     }
   },
   "sap.ui": {
@@ -51,12 +70,20 @@
         "settings": {
           "bundleName": "casestudy.training.casestudyg3.i18n.i18n"
         }
+      }, 
+      "OrderModel":{
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "OrderModel"
       },
       "": {
-              "type": "sap.ui.model.json.JSONModel",
-              "uri": "model/Orders.json",
-              "settings": {}
-            }
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      },
+      "DetailModel":{
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "DetailModel"
+      }
     },
     "resources": {
       "css": [
@@ -74,8 +101,7 @@
         "type": "View",
         "viewType": "XML",
         "path": "casestudy.training.casestudyg3.view",
-        "async": true,
-        "viewPath": "casestudy.training.casestudyg3.view"
+        "async": true
       },
       "routes": [
         {
