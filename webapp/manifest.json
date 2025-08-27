@@ -71,10 +71,6 @@
           "bundleName": "casestudy.training.casestudyg3.i18n.i18n"
         }
       }, 
-      "OrderModel":{
-        "type": "sap.ui.model.json.JSONModel",
-        "dataSource": "OrderModel"
-      },
       "": {
         "dataSource": "mainService",
         "preload": true,
