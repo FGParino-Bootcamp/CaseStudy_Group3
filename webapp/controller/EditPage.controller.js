@@ -4,13 +4,11 @@ sap.ui.define([
   "sap/m/MessageBox",
   "sap/m/MessageToast",
   "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator",
-  '../model/formatter',
-], function (Controller, JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Formatter) {
+  "sap/ui/model/FilterOperator"
+], function (Controller, JSONModel, MessageBox, MessageToast, Filter, FilterOperator) {
   "use strict";
  
 return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
-    formatter:Formatter,
     onInit: function () {
       this._sOrderId = null;
       this._oAddDialog = null;
@@ -34,7 +32,7 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
             var oOrderModel = new JSONModel(oData);
             oPanelHeader.setModel(oOrderModel, "OrderData");
           }
- 
+
         var aFilters = [];
         aFilters.push(new Filter("OrderID", FilterOperator.EQ, sOrderId));
         var oTab = this.getView().byId("ItemTable");
