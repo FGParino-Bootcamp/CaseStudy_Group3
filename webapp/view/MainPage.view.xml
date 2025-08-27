@@ -28,6 +28,7 @@ xmlns:fb="sap.ui.comp.filterbar">
 				</fb:FilterGroupItem>
 			</fb:filterGroupItems>
 		</fb:FilterBar>
+
 		<Table id="OrderTable"
 			   autoPopinMode="true"
 			   items="{ path: '/Orders',

@@ -1,8 +1,66 @@
 <mvc:View xmlns:core="sap.ui.core" controllerName="casestudy.training.casestudyg3.controller.CreatePage"
 xmlns:mvc="sap.ui.core.mvc" 
 xmlns="sap.m" 
-xmlns:f="sap.ui.layout.form">
-    <Page id="createPage" title="{i18n>title}">
-    <f:SimpleForm id="idForm1" title="Order Detail"></f:SimpleForm>
+xmlns:f="sap.ui.layout.form"
+xmlns:formatter="casestudy.training.casestudyg3.formatter">
+    <Page id="createPage" title="{i18n>Createtitle}">
+        <content>
+            <VBox id="vbox1" class="sapUiSmallMargin" justifyContent="Center">
+                <Panel id="pnOrderDetail" headerText="{i18n>orderDetail}" class="sapUiResponsiveMargin" width="auto">
+                    <content>
+                        <f:SimpleForm id="sfOrderDetail" editable="true" layout="ResponsiveGridLayout">
+                            <Label id="lblReceivingPlant" text="{i18n>receivingPlant}" required="true"/>
+                            <Input id="inpReceivingPlant" value="{/ReceivingPlant}" width="250px" showValueHelp="true" valueHelpRequest=".onSelectReceivingPlant"/>
+
+                            <Label id="lblDeliveryPlant" text="{i18n>deliveryPlant}" required="true"/>
+                            <Input id="inpDeliveryPlant" value="{/DeliveryPlant}" width="250px" showValueHelp="true" valueHelpRequest=".onSelectDeliveryPlant"/>
+                        </f:SimpleForm>
+                    </content>
+                </Panel>
+                 
+                <Panel id="pnProduct"
+                    headerText="{i18n>product}"
+                    class="sapUiResponsiveMargin" width="auto">
+                    <headerToolbar>
+                        <Toolbar id="idTlbar">
+                            <Text id="idProdItemsCount" text="Product (0)"/>
+                            <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+                            <Button id="btnAddPrd" icon="sap-icon://add" press=".onAddProduct"/>
+                            <Button id="btnDeletePrd" icon="sap-icon://delete" press=".onDeleteProduct"/>
+                        </Toolbar>
+                    </headerToolbar>
+            
+                    <Table 
+                        id="TblItem" 
+                        mode="MultiSelect"
+                        items="{DetailModel>/Order_Details}">
+                        <columns>
+                            <Column id="PrdName"><Text id="ProdNameTxtID" text="Product Name"/></Column>
+                            <Column id="Qty"       hAlign="Begin"><Text id="QtyTxtID" text="Quantity"/></Column>
+                            <Column id="UnitPrice" hAlign="Begin"><Text id="PriceTxtID" text="Unit Price"/></Column>
+                            <Column id="TotPrice"  hAlign="Begin"><Text id="TotPriceTxtID" text="Total Price"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="idProdItems">
+                                <cells>
+                                    <Text id="ProdNameItmID" text="{DetailModel>ProductName}"/>
+                                    <Input id="QtyID" value="{DetailModel>Quantity}" type="Number" liveChange=".onQtyManualChg"/>
+                                    <Text id="PriceID" text="{DetailModel>UnitPrice}"/>
+                                    <Text id="TotPriceID" text="{DetailModel>TotalPrice}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+            </VBox>
+        </content>
+
+        <footer>
+            <Toolbar id="tbFooter" class="floatingFooter">
+                <ToolbarSpacer id="tbsFooter"/>
+                    <Button id="btnSave"   text="{i18n>save}"   type="Emphasized" press=".onSave"/>
+                    <Button id="btnCancel" text="{i18n>cancel}" type="Reject"     press=".onCancel"/>
+            </Toolbar>
+        </footer>
     </Page>
 </mvc:View>
