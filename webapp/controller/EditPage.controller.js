@@ -32,23 +32,12 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
             var oOrderModel = new JSONModel(oData);
             oPanelHeader.setModel(oOrderModel, "OrderData");
           }
- 
-      oModel.read("/Order_Details", {
-            filters: [ new Filter("OrderID", FilterOperator.EQ, sOrderId) ],
-            success: function (oDetailData) {
-              var oDetailsModel = new JSONModel({
-                Order_Details: (oDetailData && oDetailData.results) ? oDetailData.results : []
-              });
-              this.getView().setModel(oDetailsModel, "details");
-              this._updateCounter();
-            }.bind(this),
-            error: function (oError) {
-              console.error("Error reading data:", oError);
-              MessageBox.error("Error reading Order_Details.");
-              this.getView().setModel(new JSONModel({ Order_Details: [] }), "details");
-              this._updateCounter();
-            }.bind(this)
-          });
+
+        var aFilters = [];
+        aFilters.push(new Filter("OrderID", FilterOperator.EQ, sOrderId));
+        var oTab = this.getView().byId("ItemTable");
+        var oBinding = oTab.getBinding("items");
+        oBinding.filter(aFilters); 
         }.bind(this),
         error: function (oError) {
           console.error("Error reading data:", oError);
@@ -58,7 +47,7 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     },
  
     _updateCounter: function () {
-      var oDetails = this.getView().getModel("details");
+      var oDetails = this.getView().getModel("DetailModel");
       var a = oDetails ? (oDetails.getProperty("/Order_Details") || []) : [];
       var oTxt = this.byId("idTxtItemsCountEdit");
       if (oTxt) { oTxt.setText("Product (" + a.length + ")"); }
@@ -112,16 +101,16 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
     },
  
     _addDetailRow: function ({ ProductName, Quantity, UnitPrice }) {
-      const oDetails = this.getView().getModel("details");
-      const a = oDetails.getProperty("/Order_Details");
-      a.push({
-        OrderID: Number(this._sOrderId),
-        ProductName,
-        Quantity,
-        UnitPrice,
-        TotalPrice: Quantity * UnitPrice
-      });
-      oDetails.setProperty("/Order_Details", a);
+      var oDetail = this.getView().getModel("DetailModel");
+      var oData = oDetail.getProperty("/Order_Details");
+      oData.push({
+      OrderID: Number(this._sOrderId),
+      ProductName,
+      Quantity,
+      UnitPrice,
+      TotalPrice: Quantity * UnitPrice
+    });
+      oDetail.setProperty("/Order_Details", oData);     
       this._updateCounter();
     },
  
@@ -138,9 +127,9 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
         onClose: (act) => {
           if (act !== MessageBox.Action.OK) return;
  
-          const oDetails = this.getView().getModel("details");
+          const oDetails = this.getView().getModel("DetailModel");
           let rows = oDetails.getProperty("/Order_Details");
-          const idxs = aSel.map(li => li.getBindingContext("details").getPath())
+          const idxs = aSel.map(li => li.getBindingContext("DetailModel").getPath())
             .map(p => Number(p.split("/").pop()))
             .sort((a, b) => b - a);
  
@@ -178,7 +167,7 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
           if (a !== MessageBox.Action.YES) return;
  
           const oModel = this.getView().getModel();
-          const oDetails = this.getView().getModel("details");
+          const oDetails = this.getView().getModel("DetailModel");
  
         if (this._snapshot) {
             oModel.setProperty(this._sOrderPath, this._snapshot.header);

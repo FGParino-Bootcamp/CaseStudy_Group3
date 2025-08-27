@@ -25,13 +25,13 @@
           "odataVersion": "2.0"
         }
       },
-      "OrderModel" : {
-        "type": "JSON",
-        "uri":"model/Orders.json"
-      },
       "DetailModel" : {
         "type": "JSON",
         "uri":"model/Order_Details.json"
+      },
+      "OrderModel" : {
+        "type": "JSON",
+        "uri":"model/Orders.json"
       }
     }
   },
@@ -80,10 +80,16 @@
         "preload": true,
         "settings": {}
       },
-      "DetailModel":{
-        "type": "sap.ui.model.json.JSONModel",
-        "dataSource": "DetailModel"
-      }
+    "DetailModel":{
+            "type": "sap.ui.model.json.JSONModel",
+            "dataSource": "DetailModel",
+            "preload": true
+          },
+    "OrderModel":{
+            "type": "sap.ui.model.json.JSONModel",
+            "dataSource": "OrderModel",
+            "preload": true
+          }
     },
     "resources": {
       "css": [
