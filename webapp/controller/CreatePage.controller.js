@@ -23,6 +23,8 @@ sap.ui.define([
                     { "Plant": "9105", "Name": "Philippines" },
                 ]);
                 this.getView().setModel(oValueHelpModel, "vhDataModel");
+                var oModel = this.getOwnerComponent().getModel("DetailModel");
+                oModel.setProperty("/Orders_Details", []);
             },
 
             onSelectReceivingPlant: function (oEvent) {
@@ -217,49 +219,43 @@ sap.ui.define([
             },
 
             fnCreateKey: function () {
-                var oModel = this.getOwnerComponent().getModel();
-
-                return new Promise(function (resolve, reject) {
-                    oModel.read("/Orders", {
+                var oModel = this.getView().byId("TblItem").getModel();
+                    oModel.read("/Orders_Details", {
                         sorters: [new sap.ui.model.Sorter("OrderID", true)],
                         urlParameters: { "$top": 1, "$select": "OrderID" },
                         success: function (oData) {
                             var orderIDMax = 1;
                             if (oData.results && oData.results.length > 0) {
                                 orderIDMax = parseInt(oData.results[0].OrderID, 10) + 1; // increment for new OrderID
+                                return OrderID = orderIDMax;
                             }
-                            resolve(orderIDMax.toString()); // return as string if needed
                         },
                         error: function (oError) {
                             console.error("Error reading OrderID:", oError);
-                            reject(oError);
                         }
                     });
-                });
             },
             
             onSave: function () {
+                var oDModel = this.getOwnerComponent().getModel("DetailModel");
                 var oModel = this.getView().getModel();
+                var recPlant1 = this.recPlant;
+                var delPlant1 = this.delPlant;
+                var recPlantDesc = this.recPlantDesc;
+                var delPlantDesc = this.delPlantDesc;
+                var oToday = new Date();
+                var oDateFormat = DateFormat.getDateInstance({pattern: "yyyyMMdd"});
+                var sFormattedDate = oDateFormat.format(oToday);
                 sap.m.MessageBox.confirm("Save changes?", {
                     actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
                     onClose: (a) => {
-                    if (a !== sap.m.MessageBox.Action.YES)  
-                        var oView = this.getView().getModel();
-
-                        var recPlant1 = this.recPlant;
-                        var delPlant1 = this.delPlant;
-                        var recPlantDesc = this.recPlantDesc;
-                        var delPlantDesc = this.delPlantDesc;
+                    if (a == sap.m.MessageBox.Action.YES)  
                         //var Products = this.getProducts(); 
-
-                        var oToday = new Date();
-                        var oDateFormat = DateFormat.getDateInstance({pattern: "yyyyMMdd"});
-                        var sFormattedDate = oDateFormat.format(oToday);
                         //var creationDate = this.formatter.formatDate(oToday);
 
-                        this.fnCreateKey().then(function (OrderID) {
+                            var sOrderID = this.fnCreateKey();
                             var oData = {
-                                OrderID: OrderID,
+                                OrderID: sOrderID,
                                 CreationDate: oToday,
                                 ReceivingPlant: recPlant1,
                                 RPlantDesc: recPlantDesc,
@@ -270,10 +266,27 @@ sap.ui.define([
                             };
                             oModel.create("/Orders", oData, {
                                 success: function(data){
-                                                                               
-                                },
+                                var oDataDetail = oDModel.getProperty("/Order_Details");
+                                for (var i = 0; i < oDataDetail.length; i++) {
+                                    var oDataDetail = {
+                                        OrderID: sOrderID,
+                                        ProductName: oDataDetail[i].ProductName,
+                                        "Quantity":  oDataDetail[i].Quantity,
+                                        "UnitPrice": oDataDetail[i].UnitPrice,
+                                        "TotalPrice": oDataDetail[i].TotalPrice }; 
+                                            oModel.create("/Order_Details", oDataDetail, {
+                                                success: function (oProductData) {
+                                                    sap.m.MessageBox.success("Order was successfully added.", {
+                                                        onClose: () => this.getOwnerComponent().getRouter().navTo("RouteMainPage")
+                                                    });
+                                                },
+                                                error: function (oError) {
+                                                    sap.m.MessageBox.error("Failed to create product item.");
+                                                }
+                                        });    
+                                        }                                          
+                               },
                             });
-                        });
                     }
                 });
             },
