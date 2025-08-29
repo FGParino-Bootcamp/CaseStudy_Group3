@@ -4,11 +4,13 @@ sap.ui.define([
   "sap/m/MessageBox",
   "sap/m/MessageToast",
   "sap/ui/model/Filter",
-  "sap/ui/model/FilterOperator"
-], function (Controller, JSONModel, MessageBox, MessageToast, Filter, FilterOperator) {
+  "sap/ui/model/FilterOperator",
+  "../model/formatter"
+], function (Controller, JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Formatter) {
   "use strict";
  
 return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
+    formatter:Formatter,
     onInit: function () {
       this._sOrderId = null;
       this._oAddDialog = null;
@@ -44,15 +46,32 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
           MessageBox.error("Error reading Orders.");
         }
       });
+      this._updateCounter();
     },
  
+    onQtyLiveChange: function (e) {
+      const ctx = e.getSource().getBindingContext("details");
+      if (!ctx) return;
+      const path = ctx.getPath();
+      const mdl  = ctx.getModel();
+      const q    = Number(e.getParameter("value")) || 0;
+      const u    = Number(mdl.getProperty(path + "/UnitPrice")) || 0;
+      mdl.setProperty(path + "/Quantity", q);
+      mdl.setProperty(path + "/TotalPrice", q * u);
+    },
     _updateCounter: function () {
-      var oDetails = this.getView().getModel("DetailModel");
-      var a = oDetails ? (oDetails.getProperty("/Order_Details") || []) : [];
-      var oTxt = this.byId("idTxtItemsCountEdit");
-      if (oTxt) { oTxt.setText("Product (" + a.length + ")"); }
+      var oTab = this.getView().byId("ItemTable");
+      var oBinding = oTab && oTab.getBinding("items");
+      if (!oBinding) return;
+    
+      var iCount = oBinding.getLength();
+    
+      var oLbl = this.getView().byId("idTxtItemsCountEdit");
+      if (oLbl) {
+        oLbl.setText("Product (" + iCount + ")");
+      }
     },
- 
+
     onAddItem: function () {
       if (this._oAddDialog) {
         this._oAddDialog.open();
@@ -142,20 +161,54 @@ return Controller.extend("casestudy.training.casestudyg3.controller.EditPage", {
       });
     },
  
-    onSave: function () {
-      MessageBox.confirm("Are you sure you want to Save these changes?", {
-        actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-        onClose: (a) => {
-          if (a !== MessageBox.Action.YES) return;
- 
-          const oDetails = this.getView().getModel("details");
-          const aAll = oDetails.getProperty("/Order_Details");
-          aAll.forEach(r => r.TotalPrice = (Number(r.Quantity) || 0) * (Number(r.UnitPrice) || 0));
-          oDetails.setProperty("/Order_Details", aAll);
- 
-          MessageBox.success(`The Order ${this._sOrderId} has been successfully updated.`, {
+  onSave: function () {
+    sap.m.MessageBox.show("Are you sure you want to save these changes?", {
+        icon: sap.m.MessageBox.Icon.QUESTION,
+    actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+        emphasizedAction: sap.m.MessageBox.Action.YES,
+        onClose: (sAction) => {
+          if (sAction !== sap.m.MessageBox.Action.YES) return;
+    
+          const oDetails = this.getView().getModel("DetailModel");
+          const aRows = oDetails.getProperty("/Order_Details") || [];
+    
+          aRows.forEach(r => {
+            const qty  = Number(r.Quantity)  || 0;
+            const unit = Number(r.UnitPrice) || 0;
+            r.TotalPrice = qty * unit;
+          });
+    
+          oDetails.setProperty("/Order_Details", aRows);
+          oDetails.updateBindings(true);
+    
+          sap.m.MessageBox.success(`The Order ${this._sOrderId} has been successfully updated.`, {
             onClose: () => this.getOwnerComponent().getRouter().navTo("RouteMainPage")
           });
+        }
+      });
+      var sOrderId = oEvent.getParameter("arguments").OrderID;
+      this._sOrderId = sOrderId;
+ 
+      const oModel = this.getView().getModel();
+      var oPanelHeader = this.getView().byId("idPanelOrderHeaderEdit");
+      var sReadUri = oModel.createKey("/Orders", { OrderID: sOrderId });
+ 
+      oModel.read(sReadUri, {
+        success: function (oData) {
+          if (oData) {
+            var oOrderModel = new JSONModel(oData);
+            oPanelHeader.setModel(oOrderModel, "OrderData");
+          }
+
+        var aFilters = [];
+        aFilters.push(new Filter("OrderID", FilterOperator.EQ, sOrderId));
+        var oTab = this.getView().byId("ItemTable");
+        var oBinding = oTab.getBinding("items");
+        oBinding.filter(aFilters); 
+        }.bind(this),
+        error: function (oError) {
+          console.error("Error reading data:", oError);
+          MessageBox.error("Error reading Orders.");
         }
       });
     },

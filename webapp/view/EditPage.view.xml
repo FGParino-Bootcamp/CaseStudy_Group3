@@ -42,7 +42,7 @@
         <headerToolbar>
           <Toolbar id="idTbItemsEdit">
             <Text id="idTxtItemsCountEdit" text="Product (0)"/>
-            <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+            <ToolbarSpacer id="_IDGenToolbarSpacer13"/>
             <Button id="btnAddItem" icon="sap-icon://add" press=".onAddItem"/>
             <Button id="btnDeleteItem" icon="sap-icon://delete" press=".onDeleteItem"/>
           </Toolbar>
@@ -73,8 +73,8 @@
     <footer>
       <Toolbar id="idFooterEdit" design="Transparent">
         <ToolbarSpacer id="_IDGenToolbarSpacer1"/>
-        <Button id="btnSave"   text="Save"   type="Emphasized" press=".onSave"/>
-        <Button id="btnCancel" text="Cancel" type="Reject"     press=".onCancel"/>
+        <Button id="btnSave1"   text="Save"   type="Emphasized" press=".onSave"/>
+        <Button id="btnCancel1" text="Cancel" type="Reject"     press=".onCancel"/>
       </Toolbar>
     </footer>
   </Page>
